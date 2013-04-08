@@ -15,7 +15,7 @@ class Tokenizer
       std::vector<Token> tokenize(const std::vector<std::string> &);
       std::string getVariable(std::string, int &, const int);
       std::string getString(std::string, int &, const int);
-      void setFilename(std::string) { this->fileName = fileName; }
+      void setFilename(std::string fileName) { this->fileName = fileName; }
       bool isKeyword(std::string);
    private:
       bool error;

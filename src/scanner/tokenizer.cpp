@@ -23,14 +23,14 @@ std::vector<Token> Tokenizer::tokenize(const std::vector<std::string> &lines)
       {
          if(isalpha(lines[i][j]))
          {
-            std::string word = getString(lines[i], j, i);
+            std::string word = getString(lines[i], ++j, i);
             int type = (isKeyword(word))? Token::KEYWORD:Token::ID;
             Token token(i, type , word);
             tokens.push_back(token);
          }
          else if(lines[i][j] == '$')
          {
-           Token token(i, Token::VAR, getVariable(lines[i], j, i));
+           Token token(i, Token::VAR, getVariable(lines[i], ++j, i));
            tokens.push_back(token);
          }
          else if(lines[i][j] == '<')
@@ -79,7 +79,10 @@ std::string Tokenizer::getVariable(std::string line, int &j, const int lineNum)
    while(j < line.length() && isalnum(line[j]) || line[j] == '_') data += line[j++];
    if(j < line.length() && line[j] != ' ' && line[j] != ';')
    {
-      Error::errMsg(fileName, lineNum, j, "Error: Variable cannot contain a "+line[j]); 
+      std::string msg = "Error: Variable cannot contain a '";
+      msg+=line[j];
+      msg+="'";
+      Error::errMsg(fileName, lineNum, j, msg);
       while(j < line.length() && line[j] != ' ' && line[j] != ';') ++j;
       error = true;
    }
